@@ -7,23 +7,23 @@ const template = { name: "rob", job: "hexlet", gender: "m" };
 describe("formFor()", () => {
   test("renders empty form with default action", () => {
     expect(HexletCode.formFor(template, {}, () => {})).toBe(
-      '<form action="#" method="post"></form>',
+      '<form method="post" action="#"></form>',
     );
   });
 
   test("renders empty form with custom url", () => {
     expect(HexletCode.formFor(template, { url: "/users" }, () => {})).toBe(
-      '<form action="/users" method="post"></form>',
+      '<form method="post" action="/users"></form>',
     );
   });
 
   test("works without options and callback", () => {
-    expect(HexletCode.formFor(template)).toBe('<form action="#" method="post"></form>');
+    expect(HexletCode.formFor(template)).toBe('<form method="post" action="#"></form>');
   });
 
   test("uses custom method", () => {
     expect(HexletCode.formFor(template, { method: "get" })).toBe(
-      '<form action="#" method="get"></form>',
+      '<form method="get" action="#"></form>',
     );
   });
 });
@@ -80,6 +80,23 @@ describe("input()", () => {
       HexletCode.formFor(template, {}, (f) => f.input("name", { as: "select" as never })),
     ).toThrow("Unsupported field type 'select'.");
   });
+
+  test("renders custom label text and attributes", () => {
+    const form = HexletCode.formFor(template, {}, (f) =>
+      f.input("name", { label: "User", labelHtml: { class: "form-label", id: "name-label" } }),
+    );
+    expect(form).toContain(
+      '<label for="name" class="form-label" id="name-label">User</label>' +
+        '<input name="name" type="text" value="rob">',
+    );
+  });
+
+  test("keeps default label when only labelHtml is given", () => {
+    const form = HexletCode.formFor(template, {}, (f) =>
+      f.input("name", { labelHtml: { class: "form-label" } }),
+    );
+    expect(form).toContain('<label for="name" class="form-label">Name</label>');
+  });
 });
 
 describe("submit()", () => {
@@ -94,7 +111,7 @@ describe("submit()", () => {
 
   test("renders default button text", () => {
     const form = HexletCode.formFor(template, {}, (f) => f.submit());
-    expect(form).toBe('<form action="#" method="post"><input type="submit" value="Save"></form>');
+    expect(form).toBe('<form method="post" action="#"><input type="submit" value="Save"></form>');
   });
 
   test("keeps field order as declared", () => {

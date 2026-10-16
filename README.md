@@ -40,7 +40,7 @@ const form = HexletCode.formFor(template, { url: "/users" }, (f) => {
 Результат:
 
 ```html
-<form action="/users" method="post">
+<form method="post" action="/users">
   <label for="name">Name</label>
   <input name="name" type="text" value="rob" class="user-input">
   <label for="job">Job</label>

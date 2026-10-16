@@ -7,8 +7,8 @@ const renderField = (field: FormField): Tag[] => {
     return [new Tag("input", { type: "submit", value: field.value })];
   }
 
-  const { name, value, attributes } = field;
-  const label = new Tag("label", { for: name }, capitalize(name));
+  const { name, value, attributes, label: labelText, labelHtml } = field;
+  const label = new Tag("label", { for: name, ...labelHtml }, labelText ?? capitalize(name));
   const control =
     field.as === "textarea"
       ? new Tag("textarea", { cols: 20, rows: 40, name, ...attributes }, value)
@@ -20,6 +20,6 @@ const renderField = (field: FormField): Tag[] => {
 export default (form: FormStructure): string =>
   new Tag(
     "form",
-    { action: form.action, method: form.method },
+    { method: form.method, action: form.action },
     form.fields.flatMap(renderField),
   ).toString();

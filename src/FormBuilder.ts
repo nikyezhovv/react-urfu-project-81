@@ -1,11 +1,25 @@
-﻿import { type Attributes } from "./Tag.js";
+﻿import { type Attributes, type AttributeValue } from "./Tag.js";
 import { toText } from "./helpers.js";
 
 export type Template = Record<string, unknown>;
-export type InputOptions = { as?: "input" | "textarea" } & Attributes;
+
+export type InputOptions = {
+  as?: "input" | "textarea";
+  label?: string;
+  labelHtml?: Attributes;
+  [attribute: string]: AttributeValue | Attributes;
+};
 
 export type FormField =
-  | { kind: "input"; as: "input" | "textarea"; name: string; value: string; attributes: Attributes }
+  | {
+      kind: "input";
+      as: "input" | "textarea";
+      name: string;
+      value: string;
+      attributes: Attributes;
+      label?: string;
+      labelHtml?: Attributes;
+    }
   | { kind: "submit"; value: string };
 
 export type FormStructure = { action: string; method: string; fields: FormField[] };
@@ -23,13 +37,21 @@ export default class FormBuilder {
       throw new Error(`Field '${name}' does not exist in the template.`);
     }
 
-    const { as = "input", ...attributes } = options;
+    const { as = "input", label, labelHtml, ...rest } = options;
 
     if (as !== "input" && as !== "textarea") {
       throw new Error(`Unsupported field type '${String(as)}'.`);
     }
 
-    this.fields.push({ kind: "input", as, name, value: toText(this.template[name]), attributes });
+    this.fields.push({
+      kind: "input",
+      as,
+      name,
+      value: toText(this.template[name]),
+      attributes: rest as Attributes,
+      label,
+      labelHtml,
+    });
   }
 
   submit(value = "Save"): void {
@@ -37,6 +59,6 @@ export default class FormBuilder {
   }
 
   build(): FormField[] {
-    return this.fields;
+    return [...this.fields];
   }
 }

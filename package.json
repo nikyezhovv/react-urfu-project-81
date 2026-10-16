@@ -1,0 +1,35 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Typescript form generator",
+  "homepage": "https://github.com/nikyezhovv/react-urfu-project-81#readme",
+  "bugs": {
+    "url": "https://github.com/nikyezhovv/react-urfu-project-81/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikyezhovv/react-urfu-project-81.git"
+  },
+  "license": "ISC",
+  "author": "nikyezhovv",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:dev": "tsx ./src/index.ts",
+    "lint": "oxlint && oxfmt --ignore-path=.oxfmtignore --check",
+    "lint-fix": "oxfmt --ignore-path=.oxfmtignore && oxlint --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test-coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@vitest/coverage-v8": "^5.0.3",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
